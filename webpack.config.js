@@ -2,6 +2,7 @@
 
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -21,15 +22,15 @@ const config = {
                 loader: 'ts-loader',
                 include: [path.resolve(__dirname, 'src')],
                 exclude: [
-                    '/node_modules/',
                     '/build/',
                     '/__tests__/',
                 ],
             },
         ],
     },
+    externals: [nodeExternals()],
     resolve: {
-        extensions: ['.ts'],
+        extensions: ['.ts', '.js'],
     },
     target: 'node',
 };
