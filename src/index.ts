@@ -1,5 +1,5 @@
 import { WebSocket, WebSocketServer } from 'ws';
-import { httpServer } from './http_server';
+import { httpServer } from './http-server';
 import { getCommand } from './commands';
 import { assertNonNullish } from './asserts';
 import * as logger from './logger';

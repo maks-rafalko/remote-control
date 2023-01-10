@@ -11,7 +11,6 @@ import { moveMouseLeft } from './moveMouseLeft';
 
 const noop: CommandHandler = () => {};
 
-// todo command history does not work
 // todo test with 2nd monitor
 // todo rewrite with streams
 
