@@ -11,9 +11,6 @@ import { moveMouseLeft } from './moveMouseLeft';
 
 const noop: CommandHandler = () => {};
 
-// todo test with 2nd monitor
-// todo rewrite with streams
-
 const commands: Record<string, CommandHandler> = {
     mouse_left: moveMouseLeft,
     mouse_right: moveMouseRight,

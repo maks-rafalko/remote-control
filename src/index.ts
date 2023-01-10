@@ -1,4 +1,4 @@
-import { WebSocket, WebSocketServer } from 'ws';
+import { createWebSocketStream, WebSocket, WebSocketServer } from 'ws';
 import { httpServer } from './http-server';
 import { getCommand } from './commands';
 import { assertNonNullish } from './asserts';
@@ -14,16 +14,29 @@ logger.debug(`Start WebSocket server on the ${WS_PORT} port.`);
 const wss = new WebSocketServer({ port: WS_PORT });
 
 wss.on('connection', async (ws: WebSocket) => {
-    ws.on('message', async (data: Buffer) => {
-        const fullCommand = data.toString();
-        logger.debug(`received: ${fullCommand}`);
+    const duplex = createWebSocketStream(ws, {
+        decodeStrings: false,
+        encoding: 'utf8',
+    });
 
-        const [commandName, ...args] = fullCommand.split(' ');
+    duplex.on('data', async (fullCommand: string) => {
+        try {
+            logger.debug(`received: ${fullCommand}`);
 
-        assertNonNullish(commandName, 'Command name must not be nullish.');
+            const [commandName, ...args] = fullCommand.split(' ');
 
-        const commandHandler = getCommand(commandName);
+            assertNonNullish(commandName, 'Command name must not be nullish.');
 
-        await commandHandler(args, ws);
+            const commandHandler = getCommand(commandName);
+
+            await commandHandler(args, duplex);
+        } catch (error: any) {
+            logger.error(error.message);
+        }
+    });
+
+    duplex.on('close', () => {
+        logger.debug('Closing WS Server.');
+        wss.close();
     });
 });

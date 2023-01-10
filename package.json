@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "Template for the WebSocket remote control task",
     "main": "src/index.ts",
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "scripts": {
         "start": "webpack --mode=production --node-env=production && node build/bundle.js",
         "start:dev": "nodemon",
