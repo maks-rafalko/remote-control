@@ -4,6 +4,7 @@ import {
 import { CommandHandler } from './CommandHandler';
 import { easingFunction } from './easingFunction';
 import { parseInt } from '../extended-functions-api/parseIntRadix10';
+import { releaseAndPressMouseLeftButton } from '../utils';
 
 const drawRectangle: CommandHandler = async (args: string[]) => {
     const width = parseInt(args[0]!);
@@ -12,8 +13,17 @@ const drawRectangle: CommandHandler = async (args: string[]) => {
     await mouse.pressButton(Button.LEFT);
 
     await mouse.move(right(width), easingFunction);
+
+    await releaseAndPressMouseLeftButton();
+
     await mouse.move(down(length), easingFunction);
+
+    await releaseAndPressMouseLeftButton();
+
     await mouse.move(left(width), easingFunction);
+
+    await releaseAndPressMouseLeftButton();
+
     await mouse.move(up(length), easingFunction);
 
     await mouse.releaseButton(Button.LEFT);
