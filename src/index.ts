@@ -3,6 +3,7 @@ import { httpServer } from './http-server';
 import { getCommand } from './commands';
 import { assertNonNullish } from './asserts';
 import * as logger from './logger';
+import { nodeCleanup } from './nodeCleanup';
 
 const HTTP_PORT = 8181;
 const WS_PORT = 8080;
@@ -34,9 +35,14 @@ wss.on('connection', async (ws: WebSocket) => {
             logger.error(error.message);
         }
     });
+});
 
-    duplex.on('close', () => {
-        logger.debug('Closing WS Server.');
-        wss.close();
+nodeCleanup((signal: string, code: number) => {
+    logger.debug(`Closing clients connections and WebSocket Server... Got ${signal} signal with code ${code}.`);
+
+    wss.clients.forEach((client) => {
+        client.close();
     });
+
+    wss.close();
 });
