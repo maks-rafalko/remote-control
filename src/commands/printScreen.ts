@@ -11,10 +11,24 @@ const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex)
 
     const screenshotHalfWidth = SCREENSHOT_WIDTH_AND_HEIGHT / 2;
 
+    const screenWidth = await screen.width();
+    const screenHeight = await screen.height();
+
+    let regionLeft = Math.max(0, currentX - screenshotHalfWidth);
+    let regionTop = Math.max(0, currentY - screenshotHalfWidth);
+
+    if (regionLeft + SCREENSHOT_WIDTH_AND_HEIGHT > screenWidth) {
+        regionLeft = screenWidth - SCREENSHOT_WIDTH_AND_HEIGHT;
+    }
+
+    if (regionTop + SCREENSHOT_WIDTH_AND_HEIGHT > screenHeight) {
+        regionTop = screenHeight - SCREENSHOT_WIDTH_AND_HEIGHT;
+    }
+
     const imageBgr = await screen.grabRegion(
         new Region(
-            Math.max(0, currentX - screenshotHalfWidth),
-            Math.max(0, currentY - screenshotHalfWidth),
+            regionLeft,
+            regionTop,
             SCREENSHOT_WIDTH_AND_HEIGHT,
             SCREENSHOT_WIDTH_AND_HEIGHT,
         ),
