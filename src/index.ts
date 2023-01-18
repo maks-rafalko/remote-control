@@ -15,6 +15,8 @@ logger.debug(`Start WebSocket server on the ${WS_PORT} port.`);
 const wss = new WebSocketServer({ port: WS_PORT });
 
 wss.on('connection', async (ws: WebSocket) => {
+    logger.debug('New WebSocket client has been connected to WebSocket Server.');
+
     const duplex = createWebSocketStream(ws, {
         decodeStrings: false,
         encoding: 'utf8',
@@ -34,6 +36,10 @@ wss.on('connection', async (ws: WebSocket) => {
         } catch (error: any) {
             logger.error(error.message);
         }
+    });
+
+    ws.on('close', () => {
+        logger.debug('WebSocket client has been disconnected from WebSocket Server.');
     });
 });
 
