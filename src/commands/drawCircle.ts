@@ -1,16 +1,30 @@
 import {
-    Button, mouse, Point, straightTo,
+    Button, mouse, Point, screen, straightTo,
 } from '@nut-tree/nut-js';
 import { CommandHandler } from './CommandHandler';
 import { easingFunction } from './easingFunction';
 import { parseInt } from '../extended-functions-api/parseIntRadix10';
+import {OutOfScreenError} from "../error/OutOfScreenError";
 
 const CIRCLE_DRAW_STEP = 0.05;
 
 const drawCircle: CommandHandler = async (args: string[]) => {
     const radius = parseInt(args[0]!);
 
-    const { x: currentX, y: currentY } = await mouse.getPosition();
+    const {x: currentX, y: currentY} = await mouse.getPosition();
+
+    const screenWidth = await screen.width();
+    const screenHeight = await screen.height();
+
+    const isMousePositionWillBeOutOfScreen =
+        currentX - radius < 0
+        || currentY - radius < 0
+        || (currentX + 2 * radius) > screenWidth
+        || (currentY + radius) > screenHeight;
+
+    if (isMousePositionWillBeOutOfScreen) {
+        throw new OutOfScreenError();
+    }
 
     const centerX = currentX + radius;
     const centerY = currentY;
