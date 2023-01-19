@@ -9,9 +9,7 @@ import { moveMouseDown } from './moveMouseDown';
 import { moveMouseRight } from './moveMouseRight';
 import { moveMouseLeft } from './moveMouseLeft';
 
-const noop: CommandHandler = async (): Promise<string> => {
-    return 'Command not found';
-};
+const noop: CommandHandler = async (): Promise<string> => 'Command not found';
 
 const commands: Record<string, CommandHandler> = {
     mouse_left: moveMouseLeft,

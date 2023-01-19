@@ -3,8 +3,8 @@ import {
 } from '@nut-tree/nut-js';
 import { CommandHandler } from './CommandHandler';
 import { easingFunction } from './easingFunction';
-import { parseInt } from '../extended-functions-api/parseIntRadix10';
-import {OutOfScreenError} from "../error/OutOfScreenError";
+import { parseIntRadix10 } from '../extended-functions-api/parseIntRadix10';
+import { OutOfScreenError } from '../error/OutOfScreenError';
 
 const CIRCLE_DRAW_STEP = 0.05;
 
@@ -12,8 +12,7 @@ const assertMousePositionIsInsideScreen = async (currentX: number, radius: numbe
     const screenWidth = await screen.width();
     const screenHeight = await screen.height();
 
-    const isMousePositionWillBeOutOfScreen =
-        currentX - radius < 0
+    const isMousePositionWillBeOutOfScreen = currentX - radius < 0
         || currentY - radius < 0
         || (currentX + 2 * radius) > screenWidth
         || (currentY + radius) > screenHeight;
@@ -21,12 +20,12 @@ const assertMousePositionIsInsideScreen = async (currentX: number, radius: numbe
     if (isMousePositionWillBeOutOfScreen) {
         throw new OutOfScreenError();
     }
-}
+};
 
 const drawCircle: CommandHandler = async (args: string[]): Promise<string> => {
-    const radius = parseInt(args[0]!);
+    const radius = parseIntRadix10(args[0]!);
 
-    const {x: currentX, y: currentY} = await mouse.getPosition();
+    const { x: currentX, y: currentY } = await mouse.getPosition();
 
     await assertMousePositionIsInsideScreen(currentX, radius, currentY);
 

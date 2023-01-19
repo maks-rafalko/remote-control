@@ -7,7 +7,7 @@ import { CommandHandler } from './CommandHandler';
 const SCREENSHOT_WIDTH_AND_HEIGHT = 200;
 
 const getRegionLeftTopInsideScreen = async () => {
-    const {x: currentX, y: currentY} = await mouse.getPosition();
+    const { x: currentX, y: currentY } = await mouse.getPosition();
 
     const screenshotHalfWidth = SCREENSHOT_WIDTH_AND_HEIGHT / 2;
 
@@ -25,11 +25,11 @@ const getRegionLeftTopInsideScreen = async () => {
         regionTop = screenHeight - SCREENSHOT_WIDTH_AND_HEIGHT;
     }
 
-    return {regionLeft, regionTop};
-}
+    return { regionLeft, regionTop };
+};
 
 const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex): Promise<string> => {
-    const {regionLeft, regionTop} = await getRegionLeftTopInsideScreen();
+    const { regionLeft, regionTop } = await getRegionLeftTopInsideScreen();
 
     const imageBgr = await screen.grabRegion(
         new Region(

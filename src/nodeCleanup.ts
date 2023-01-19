@@ -1,12 +1,13 @@
 const SIGNAL_CODE_START_FROM = 128;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let cleanupHandler = (_signal: string, _code: number) => {};
 
 const signalHandler = (signal: string, code: number) => {
     cleanupHandler(signal, code);
 
     process.exit(SIGNAL_CODE_START_FROM + code);
-}
+};
 
 const nodeCleanup = (callback: (signal: string, code: number) => void) => {
     cleanupHandler = callback;
