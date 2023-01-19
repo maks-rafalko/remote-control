@@ -8,11 +8,7 @@ import {OutOfScreenError} from "../error/OutOfScreenError";
 
 const CIRCLE_DRAW_STEP = 0.05;
 
-const drawCircle: CommandHandler = async (args: string[]) => {
-    const radius = parseInt(args[0]!);
-
-    const {x: currentX, y: currentY} = await mouse.getPosition();
-
+const assertMousePositionIsInsideScreen = async (currentX: number, radius: number, currentY: number): Promise<void> => {
     const screenWidth = await screen.width();
     const screenHeight = await screen.height();
 
@@ -25,6 +21,14 @@ const drawCircle: CommandHandler = async (args: string[]) => {
     if (isMousePositionWillBeOutOfScreen) {
         throw new OutOfScreenError();
     }
+}
+
+const drawCircle: CommandHandler = async (args: string[]): Promise<string> => {
+    const radius = parseInt(args[0]!);
+
+    const {x: currentX, y: currentY} = await mouse.getPosition();
+
+    await assertMousePositionIsInsideScreen(currentX, radius, currentY);
 
     const centerX = currentX + radius;
     const centerY = currentY;
@@ -40,6 +44,8 @@ const drawCircle: CommandHandler = async (args: string[]) => {
     }
 
     await mouse.releaseButton(Button.LEFT);
+
+    return `circle was drawn with radius ${radius}`;
 };
 
 export { drawCircle };

@@ -24,7 +24,7 @@ wss.on('connection', async (ws: WebSocket) => {
 
     duplex.on('data', async (fullCommand: string) => {
         try {
-            logger.debug(`received: ${fullCommand}`);
+            logger.debug(`\nReceived command: ${fullCommand}`);
 
             const [commandName, ...args] = fullCommand.split(' ');
 
@@ -32,7 +32,9 @@ wss.on('connection', async (ws: WebSocket) => {
 
             const commandHandler = getCommand(commandName);
 
-            await commandHandler(args, duplex);
+            const commandResult = await commandHandler(args, duplex);
+
+            logger.debug(`Command result: ${commandResult}\n`);
         } catch (error: any) {
             logger.error(error.message);
         }

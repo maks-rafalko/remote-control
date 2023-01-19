@@ -6,8 +6,8 @@ import { CommandHandler } from './CommandHandler';
 
 const SCREENSHOT_WIDTH_AND_HEIGHT = 200;
 
-const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex) => {
-    const { x: currentX, y: currentY } = await mouse.getPosition();
+const getRegionLeftTopInsideScreen = async () => {
+    const {x: currentX, y: currentY} = await mouse.getPosition();
 
     const screenshotHalfWidth = SCREENSHOT_WIDTH_AND_HEIGHT / 2;
 
@@ -24,6 +24,12 @@ const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex)
     if (regionTop + SCREENSHOT_WIDTH_AND_HEIGHT > screenHeight) {
         regionTop = screenHeight - SCREENSHOT_WIDTH_AND_HEIGHT;
     }
+
+    return {regionLeft, regionTop};
+}
+
+const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex): Promise<string> => {
+    const {regionLeft, regionTop} = await getRegionLeftTopInsideScreen();
 
     const imageBgr = await screen.grabRegion(
         new Region(
@@ -45,7 +51,11 @@ const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex)
     const base64buffer = await jimpImage.getBufferAsync(Jimp.MIME_PNG);
     const base64 = base64buffer.toString('base64');
 
-    webSocketStream.write(`prnt_scrn ${base64}`);
+    const commandResponse = `prnt_scrn ${base64}`;
+
+    webSocketStream.write(commandResponse);
+
+    return commandResponse;
 };
 
 export { printScreen };

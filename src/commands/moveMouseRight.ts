@@ -7,6 +7,8 @@ const moveMouseRight: CommandHandler = async (args: string[]) => {
     const deltaPx = parseInt(args[0]!);
 
     await mouse.move(right(deltaPx), easingFunction);
+
+    return `moved mouse right by ${deltaPx}px`;
 };
 
 export { moveMouseRight };

@@ -6,6 +6,8 @@ import { parseInt } from '../extended-functions-api/parseIntRadix10';
 const moveMouseLeft: CommandHandler = async (args: string[]) => {
     const deltaPx = parseInt(args[0]!);
     await mouse.move(left(deltaPx), easingFunction);
+
+    return `moved mouse left by ${deltaPx}px`;
 };
 
 export { moveMouseLeft };

@@ -7,10 +7,7 @@ import { parseInt } from '../extended-functions-api/parseIntRadix10';
 import { releaseAndPressMouseLeftButton } from '../utils';
 import {OutOfScreenError} from "../error/OutOfScreenError";
 
-const drawRectangle: CommandHandler = async (args: string[]) => {
-    const width = parseInt(args[0]!);
-    const length = parseInt(args[1]!);
-
+async function assertMousePositionIsInsideScreen(width: number, length: number) {
     const {x: currentX, y: currentY} = await mouse.getPosition();
 
     const screenWidth = await screen.width();
@@ -23,6 +20,13 @@ const drawRectangle: CommandHandler = async (args: string[]) => {
     if (isMousePositionWillBeOutOfScreen) {
         throw new OutOfScreenError();
     }
+}
+
+const drawRectangle: CommandHandler = async (args: string[]) => {
+    const width = parseInt(args[0]!);
+    const length = parseInt(args[1]!);
+
+    await assertMousePositionIsInsideScreen(width, length);
 
     await mouse.pressButton(Button.LEFT);
 
@@ -41,6 +45,8 @@ const drawRectangle: CommandHandler = async (args: string[]) => {
     await mouse.move(up(length), easingFunction);
 
     await mouse.releaseButton(Button.LEFT);
+
+    return `rectangle was drawn with width ${width} and length ${length}`;
 };
 
 export { drawRectangle };
