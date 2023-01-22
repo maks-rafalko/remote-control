@@ -1,7 +1,7 @@
 {
     "name": "ws_task",
     "version": "1.0.0",
-    "description": "Template for the WebSocket remote control task",
+    "description": "RS School: WebSocket remote control task",
     "main": "src/index.ts",
     "engines": {
         "node": ">=18.0.0"
