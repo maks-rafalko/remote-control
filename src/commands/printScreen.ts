@@ -1,5 +1,4 @@
 import { mouse, Region, screen } from '@nut-tree/nut-js';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Jimp from 'jimp';
 import { Duplex } from 'stream';
 import { CommandHandler } from './CommandHandler';
