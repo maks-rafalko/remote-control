@@ -10,6 +10,13 @@ git checkout feature/ws-remote-control
 
 # install dependencies
 npm ci
+
+
+```
+(!) Make sure to copy `.env.example` to `.env` and update the port value if needed.
+
+```bash
+cp .env.example .env
 ```
 
 ## Usage

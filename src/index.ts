@@ -4,15 +4,21 @@ import { getCommand } from './commands';
 import { assertNonNullish } from './asserts';
 import * as logger from './logger';
 import { nodeCleanup } from './nodeCleanup';
+import * as dotenv from 'dotenv';
 
-const HTTP_PORT = 8181;
-const WS_PORT = 8080;
+dotenv.config();
 
-logger.debug(`Start static http server on the ${HTTP_PORT} port.`);
-httpServer.listen(HTTP_PORT);
+assertNonNullish(process.env['HTTP_SERVER_PORT'], 'HTTP port must be a number.');
+const httpServerPort = parseInt(process.env['HTTP_SERVER_PORT']);
 
-logger.debug(`Start WebSocket server on the ${WS_PORT} port.`);
-const wss = new WebSocketServer({ port: WS_PORT });
+assertNonNullish(process.env['WEBSOCKET_SERVER_PORT'], 'WebSocket port must be a number.');
+const webSocketServerPort = parseInt(process.env['WEBSOCKET_SERVER_PORT']);
+
+logger.debug(`Start static http server on the ${httpServerPort} port.`);
+httpServer.listen(httpServerPort);
+
+logger.debug(`Start WebSocket server on the ${webSocketServerPort} port.`);
+const wss = new WebSocketServer({ port: webSocketServerPort });
 
 wss.on('connection', async (ws: WebSocket) => {
     logger.debug('New WebSocket client has been connected to WebSocket Server.');
