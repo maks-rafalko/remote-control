@@ -31,14 +31,16 @@ const getRegionLeftTopInsideScreen = async () => {
 const printScreen: CommandHandler = async (_: string[], webSocketStream: Duplex): Promise<string> => {
     const { regionLeft, regionTop } = await getRegionLeftTopInsideScreen();
 
-    const imageBgr = await screen.grabRegion(
-        new Region(
-            regionLeft,
-            regionTop,
-            SCREENSHOT_WIDTH_AND_HEIGHT,
-            SCREENSHOT_WIDTH_AND_HEIGHT,
-        ),
+    const region = new Region(
+        regionLeft,
+        regionTop,
+        SCREENSHOT_WIDTH_AND_HEIGHT,
+        SCREENSHOT_WIDTH_AND_HEIGHT,
     );
+
+    await screen.highlight(region);
+
+    const imageBgr = await screen.grabRegion(region);
 
     const imageRgb = await imageBgr.toRGB();
 
