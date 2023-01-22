@@ -9,7 +9,7 @@ const signalHandler = (signal: string, code: number) => {
     process.exit(SIGNAL_CODE_START_FROM + code);
 };
 
-const nodeCleanup = (callback: (signal: string, code: number) => void) => {
+const onProcessTermination = (callback: (signal: string, code: number) => void) => {
     cleanupHandler = callback;
 
     process.on('SIGINT', signalHandler);
@@ -19,4 +19,4 @@ const nodeCleanup = (callback: (signal: string, code: number) => void) => {
     process.on('uncaughtException', signalHandler);
 };
 
-export { nodeCleanup };
+export { onProcessTermination };
