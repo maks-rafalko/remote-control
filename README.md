@@ -1,31 +1,53 @@
 # RSSchool NodeJS websocket task template
-> Static http server and base task packages. 
-> By default WebSocket client tries to connect to the 8080 port.
 
 ## Installation
-1. Clone/download repo
-2. `npm install`
+
+```bash
+# clone the repo and open development branch
+git clone git@github.com:maks-rafalko/remote-control.git
+
+git checkout feature/ws-remote-control
+
+# install dependencies
+npm ci
+
+
+```
+(!) Make sure to copy `.env.example` to `.env` and update the port value if needed.
+
+```bash
+cp .env.example .env
+```
 
 ## Usage
-**Development**
 
-`npm run start:dev`
+By default, WebSocket server is up on `8080` port and Frontend application will automatically connect to it.
 
-* App served @ `http://localhost:8181` with nodemon
+Application writes logs with the detailed information about the server's work to the console. Make sure to analyze them to understand what's going on.
 
-**Production**
+Screenshot functionality **does not use** files, all the work is done in memory.
 
-`npm run start`
+### Development
 
-* App served @ `http://localhost:8181` without nodemon
+```bash
+npm run start:dev
+```
 
----
+* App served at http://localhost:8181 with `nodemon` for convenient development.
 
-**All commands**
+### Production
 
-Command | Description
---- | ---
-`npm run start:dev` | App served @ `http://localhost:8181` with nodemon
-`npm run start` | App served @ `http://localhost:8181` without nodemon
+```bash
+npm run start
+```
 
-**Note**: replace `npm` with `yarn` in `package.json` if you use yarn.
+* App served at http://localhost:8181 without `nodemon`, using a `webpack` bundle, compiled in `production` environment.
+
+## Other
+
+There are some useful commands in the `package.json` file.
+
+* `npm run lint` - run `eslint`
+* `npm run lint:fix` - run `eslint` and fix errors.
+
+There are no tests in this project, as it's not required for this task.
